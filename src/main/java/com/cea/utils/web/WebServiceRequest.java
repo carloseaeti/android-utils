@@ -60,6 +60,9 @@ public class WebServiceRequest {
             }
         }
         catch (HttpClientErrorException e) {
+            if(e.getMessage().contains("401 Unauthorized")){
+                return context.getString(R.string.default_unauthorized_error);
+            }
             if(e.getMessage().contains("404")){
                 result = context.getResources().getString(R.string.default_404_server_error);
             }

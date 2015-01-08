@@ -13,5 +13,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Configurar</string>
     <string name="default_generic_error">Erro desconhecido. Tente novamente. Caso o erro persista, entre em contato com o administrador.</string>
+    <string name="default_unauthorized_error">Sem autorização.</string>
 
 </resources>

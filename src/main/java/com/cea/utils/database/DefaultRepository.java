@@ -57,7 +57,7 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    protected <T> void createOrUpdate(Class<T> clazz, T data){
+    public <T> void createOrUpdate(Class<T> clazz, T data){
         Dao<T, Object> dao = getDao(clazz);
         try {
             dao.createOrUpdate(data);
