@@ -43,7 +43,6 @@ public class WebServiceRequest {
      * @return Plain and understandable by humans error.
      */
     public static String serviceRequestExceptionManager(Context context, Exception genericException, boolean logUnknown, String... unknownErrorMessage){
-        genericException.printStackTrace();
         String result;
         try{
             throw genericException;
