@@ -3,8 +3,6 @@ package com.cea.utils.ui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.LinearLayout;
 
 /**

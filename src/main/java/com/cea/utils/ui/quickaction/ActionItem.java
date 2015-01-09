@@ -1,7 +1,5 @@
 package com.cea.utils.ui.quickaction;
 
-import android.graphics.drawable.Drawable;
-import android.graphics.Bitmap;
 import android.view.View;
 
 /**

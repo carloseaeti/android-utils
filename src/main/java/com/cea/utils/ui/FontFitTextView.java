@@ -3,8 +3,8 @@ package com.cea.utils.ui;
 /**
  * Created by Carlos on 31/07/2014.
  */
+
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.TypedValue;

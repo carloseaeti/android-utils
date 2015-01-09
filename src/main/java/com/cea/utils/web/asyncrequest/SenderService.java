@@ -25,7 +25,6 @@ import dalvik.system.DexFile;
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p>
- * TODO: Customize class - update intent actions and extra parameters.
  */
 public class SenderService extends IntentService {
 

@@ -1,6 +1,7 @@
 package com.cea.utils.ui.inject;
 
 import android.view.View;
+
 import java.lang.reflect.Field;
 
 /**
