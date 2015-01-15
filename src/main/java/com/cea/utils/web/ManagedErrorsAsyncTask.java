@@ -3,6 +3,7 @@ package com.cea.utils.web;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ public abstract class ManagedErrorsAsyncTask<Params, Progress, Result> extends A
 
     protected Context mContext;
     private boolean showErrorInDialog;
+    private DialogInterface.OnClickListener onMessageClosedListener;
 
     public  ManagedErrorsAsyncTask(Context context, boolean showResultMessageInDialog){
         mContext = context;
@@ -22,26 +24,33 @@ public abstract class ManagedErrorsAsyncTask<Params, Progress, Result> extends A
     protected String message;
     protected String messageTitle = "Erro";
 
+    protected void setOnMessageClosedAction(DialogInterface.OnClickListener onMessageClosedListener){
+        this.onMessageClosedListener = onMessageClosedListener;
+    }
+
     @Override
     protected void onPostExecute(Result o) {
-        if(progressDialog != null && progressDialog.isShowing()){
-            progressDialog.dismiss();
-        }
-        if(this.message != null){
-            if(showErrorInDialog){
-                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-                dialog.setTitle(messageTitle);
-                dialog.setMessage(message);
-                dialog.setCancelable(false);
-                dialog.setPositiveButton("OK", null);
-                dialog.show();
+        try {
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
             }
-            else{
-                Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+            if (this.message != null) {
+                if (showErrorInDialog) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                    dialog.setTitle(messageTitle);
+                    dialog.setMessage(message);
+                    dialog.setCancelable(false);
+                    dialog.setPositiveButton("OK", onMessageClosedListener);
+                    dialog.show();
+                } else {
+                    Toast.makeText(mContext, message, Toast.LENGTH_LONG).show();
+                }
             }
+            onMessageClosedListener = null;
+            this.message = null;
+            this.messageTitle = "Erro";
         }
-        this.message = null;
-        this.messageTitle = "Erro";
+        catch (Exception ex){}
     }
 
     protected ProgressDialog progressDialog;
