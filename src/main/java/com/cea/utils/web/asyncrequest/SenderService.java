@@ -22,7 +22,7 @@ import dalvik.system.DexFile;
 
 
 /**
- * An {@link IntentService} subclass for handling asynchronous task requests in
+ * An {@link android.app.IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
  * <p>
  */
@@ -87,6 +87,7 @@ public class SenderService extends IntentService {
                 AsyncRequest asyncRequestInstance = (AsyncRequest) asyncRequest.newInstance();
                 if(timeout(preferences, asyncRequest, asyncRequestInstance, isWifiOn)){
                     asyncRequestInstance.send();
+                    preferences.edit().putLong(asyncRequest.getName(), System.currentTimeMillis()).commit();
                 }
             } catch (Exception e) {
                 Log.w(getClass().getSimpleName(), "Sync error", e);
@@ -100,11 +101,7 @@ public class SenderService extends IntentService {
         SyncTime syncTime = asyncRequestInstance.syncTime();
         boolean timeout = currentTime >= lastRequest + (syncTime == null ? SyncTime.ONE_HOUR.getValue() : syncTime.getValue());
         boolean useWifiInterface = useWifiInterface(asyncRequestInstance.useInterface(), isWifiOn);
-        boolean result = timeout && useWifiInterface;
-        if(result){
-            preferences.edit().putLong(clazz.getName(), currentTime);
-        }
-        return result;
+        return timeout && useWifiInterface;
     }
 
     private boolean isWifiOn(Context context){
@@ -115,7 +112,7 @@ public class SenderService extends IntentService {
     }
 
     private boolean useWifiInterface(NetworkInterface networkInterface, boolean isWifiOn) {
-        return (!NetworkInterface.WIFI.equals(networkInterface) && !isWifiOn);
+        return (NetworkInterface.WIFI.equals(networkInterface) && isWifiOn);
     }
 
     private SharedPreferences getPreferences(Context context) {
