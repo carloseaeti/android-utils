@@ -5,11 +5,14 @@ package com.cea.utils.web.asyncrequest;
  */
 public enum SyncTime {
 
-    FIVE_MINUTES, THIRTY_MINUTES, ONE_HOUR;
+    ONE_MINUTE, FIVE_MINUTES, THIRTY_MINUTES, ONE_HOUR;
 
     private static final long MINUTE = 60*1000;
 
     public long getValue() {
+        if(equals(ONE_MINUTE)){
+            return MINUTE;
+        }
         if(equals(FIVE_MINUTES)){
             return 5*MINUTE;
         }

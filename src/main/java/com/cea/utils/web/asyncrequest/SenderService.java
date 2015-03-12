@@ -100,8 +100,7 @@ public class SenderService extends IntentService {
         long currentTime = System.currentTimeMillis();
         SyncTime syncTime = asyncRequestInstance.syncTime();
         boolean timeout = currentTime >= lastRequest + (syncTime == null ? SyncTime.ONE_HOUR.getValue() : syncTime.getValue());
-        boolean useWifiInterface = useWifiInterface(asyncRequestInstance.useInterface(), isWifiOn);
-        return timeout && useWifiInterface;
+        return timeout && (NetworkInterface.WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface._3G));
     }
 
     private boolean isWifiOn(Context context){
@@ -109,10 +108,6 @@ public class SenderService extends IntentService {
         connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return wifi.isConnected();
-    }
-
-    private boolean useWifiInterface(NetworkInterface networkInterface, boolean isWifiOn) {
-        return (NetworkInterface.WIFI.equals(networkInterface) && isWifiOn);
     }
 
     private SharedPreferences getPreferences(Context context) {

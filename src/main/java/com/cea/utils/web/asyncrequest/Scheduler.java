@@ -66,7 +66,7 @@ public class Scheduler extends WakefulBroadcastReceiver {
         Intent intent = new Intent(ACTION_SCHEDULER_CALL);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + SyncTime.FIVE_MINUTES.getValue() + 10 * 1000,
+                SystemClock.elapsedRealtime() + SyncTime.ONE_MINUTE.getValue() + 10 * 1000,
                 alarmIntent);
     }
 }

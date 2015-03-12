@@ -24,9 +24,8 @@ public class WebServiceRequest {
     private static final int DEFAULT_READ_TIMEOUT = 20*1000;
 
     public static RestTemplate getDefaultRestTemplate(Integer... timeout){
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(true);
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
         SimpleClientHttpRequestFactory restTemplateFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
         if(timeout != null && timeout.length > 0){
             restTemplateFactory.setConnectTimeout(timeout[0]);
