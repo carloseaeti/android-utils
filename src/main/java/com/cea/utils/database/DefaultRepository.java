@@ -9,6 +9,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by carlos.araujo on 19/12/2014.
@@ -57,7 +59,8 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public <T> void createOrUpdate(Class<T> clazz, T data){
+    public <T> void createOrUpdate(T data){
+        Class clazz = data.getClass();
         Dao<T, Object> dao = getDao(clazz);
         try {
             dao.createOrUpdate(data);
@@ -70,6 +73,38 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
         Dao<T, Object> dao = getDao(clazz);
         try {
             return dao.queryForId(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public <T> void delete(T... data) {
+        if(data.length > 0) {
+            Class clazz = data[0].getClass();
+            Dao<T, Object> dao = getDao(clazz);
+            try {
+                List<T> dataList = Arrays.asList(data);
+                dao.delete(dataList);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public <T> List<T> getAll(Class clazz) {
+        Dao<T, Object> dao = getDao(clazz);
+        try {
+            return dao.queryForAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public Long getCount(Class clazz) {
+        Dao dao = getDao(clazz);
+        try {
+            return dao.countOf();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -50,7 +50,7 @@ public class Scheduler extends WakefulBroadcastReceiver {
 
     private boolean minOffsetNetworkCallTimeout(SharedPreferences preferences) {
         long lastSync = preferences.getLong(PREFERENCE_LAST_SYNC, Long.MIN_VALUE);
-        boolean timeout = System.currentTimeMillis() >=  lastSync + SyncTime.FIVE_MINUTES.getValue() / 5;
+        boolean timeout = System.currentTimeMillis() >=  lastSync + SyncTime.MIN_TIME;
         if(timeout){
             preferences.edit().putLong(PREFERENCE_LAST_SYNC, System.currentTimeMillis()).commit();
         }
@@ -66,7 +66,7 @@ public class Scheduler extends WakefulBroadcastReceiver {
         Intent intent = new Intent(ACTION_SCHEDULER_CALL);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + SyncTime.ONE_MINUTE.getValue() + 10 * 1000,
+                SystemClock.elapsedRealtime() + SyncTime.MIN_TIME + 5 * 1000,
                 alarmIntent);
     }
 }

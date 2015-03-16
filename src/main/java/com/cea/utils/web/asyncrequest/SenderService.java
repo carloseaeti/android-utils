@@ -70,10 +70,6 @@ public class SenderService extends IntentService {
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
     private void send() {
         SharedPreferences preferences = getPreferences(getApplicationContext());
         boolean isWifiOn = isWifiOn(getApplicationContext());
@@ -86,11 +82,13 @@ public class SenderService extends IntentService {
             try {
                 AsyncRequest asyncRequestInstance = (AsyncRequest) asyncRequest.newInstance();
                 if(timeout(preferences, asyncRequest, asyncRequestInstance, isWifiOn)){
+                    Log.d(Scheduler.class.getSimpleName(), "Calling scheduler on class ".concat(asyncRequest.getSimpleName()));
                     asyncRequestInstance.send();
+                    Log.d(Scheduler.class.getSimpleName(), "Sync success on class ".concat(asyncRequest.getSimpleName()));
                     preferences.edit().putLong(asyncRequest.getName(), System.currentTimeMillis()).commit();
                 }
             } catch (Exception e) {
-                Log.w(getClass().getSimpleName(), "Sync error", e);
+                Log.w(Scheduler.class.getSimpleName(), "Sync error", e);
             }
         }
     }
@@ -99,7 +97,10 @@ public class SenderService extends IntentService {
         long lastRequest = preferences.getLong(clazz.getName(), Long.MIN_VALUE);
         long currentTime = System.currentTimeMillis();
         SyncTime syncTime = asyncRequestInstance.syncTime();
-        boolean timeout = currentTime >= lastRequest + (syncTime == null ? SyncTime.ONE_HOUR.getValue() : syncTime.getValue());
+        if(syncTime.getValue() == SyncTime.INFINITE){
+            return false;
+        }
+        boolean timeout = (currentTime >= lastRequest + (syncTime == null ? SyncTime.ONE_HOUR : syncTime.getValue()));
         return timeout && (NetworkInterface.WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface._3G));
     }
 

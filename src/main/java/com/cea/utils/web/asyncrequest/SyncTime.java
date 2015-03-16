@@ -3,22 +3,23 @@ package com.cea.utils.web.asyncrequest;
 /**
  * Created by carlos.araujo on 19/11/2014.
  */
-public enum SyncTime {
+public class SyncTime {
 
-    ONE_MINUTE, FIVE_MINUTES, THIRTY_MINUTES, ONE_HOUR;
+    public static final long MIN_TIME = 60 * 1000;
+    public static final long FIVE_MINUTES = 300000L;
+    public static final long THIRTY_MINUTES = 1800000L;
+    public static final long ONE_HOUR = 3600000L;
+    public static final long INFINITE = -1;
 
-    private static final long MINUTE = 60*1000;
+    private long time = MIN_TIME;
+
+    public SyncTime(long time){
+        if(time > MIN_TIME || time == INFINITE){
+            this.time = time;
+        }
+    }
 
     public long getValue() {
-        if(equals(ONE_MINUTE)){
-            return MINUTE;
-        }
-        if(equals(FIVE_MINUTES)){
-            return 5*MINUTE;
-        }
-        if(equals(THIRTY_MINUTES)){
-            return 30*MINUTE;
-        }
-        return 60*MINUTE;
+        return time;
     }
 }
