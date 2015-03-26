@@ -57,7 +57,7 @@ public class CustomScrollView extends ScrollView {
         Rect statusBarSize = new Rect();
         View window = rootView.getRootView();
         window.getWindowVisibleDisplayFrame(statusBarSize);
-        int methodReturn = window.getHeight() - rootView.getHeight() - statusBarSize.top - navigationBarHeight(window);
+        int methodReturn = window.getHeight() - rootView.getHeight() - statusBarSize.top;
         return  methodReturn < 0 ? 0 : methodReturn;
     }
 

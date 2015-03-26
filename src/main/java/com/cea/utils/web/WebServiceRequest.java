@@ -23,9 +23,11 @@ public class WebServiceRequest {
     private static final int DEFAULT_CONNECTION_TIMEOUT = 10*1000;
     private static final int DEFAULT_READ_TIMEOUT = 20*1000;
 
-    public static RestTemplate getDefaultRestTemplate(Integer... timeout){
+    public static RestTemplate getDefaultRestTemplate(boolean useGson, Integer... timeout){
         RestTemplate restTemplate = new RestTemplate(true);
-        restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+        if(useGson) {
+            restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+        }
         SimpleClientHttpRequestFactory restTemplateFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
         if(timeout != null && timeout.length > 0){
             restTemplateFactory.setConnectTimeout(timeout[0]);
