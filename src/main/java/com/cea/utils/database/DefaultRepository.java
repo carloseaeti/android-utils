@@ -109,4 +109,8 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
             throw new RuntimeException(e);
         }
     }
+
+    public void deleteAll(Class clazz) {
+        getWritableDatabase().execSQL("DELETE FROM " + clazz.getSimpleName());
+    }
 }
