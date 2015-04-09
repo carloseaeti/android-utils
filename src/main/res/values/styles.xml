@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 	<style name="Animations" />
 
 	<!-- PopDownMenu -->
@@ -47,4 +47,19 @@
 		<item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
 		<item name="@android:windowExitAnimation">@anim/disappear</item>
 	</style>
+
+    <!-- Base application theme. -->
+    <style name="TrixTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionBarStyle" tools:ignore="NewApi">@style/TrixActionBar</item>
+        <item name="actionBarStyle">@style/TrixActionBar</item>
+    </style>
+
+    <style name="TrixActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:titleTextStyle" tools:ignore="NewApi">@style/TrixActionBarTitleTextStyle</item>
+        <item name="titleTextStyle">@style/TrixActionBarTitleTextStyle</item>
+    </style>
+
+    <style name="TrixActionBarTitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/action_bar_text_color</item>
+    </style>
 </resources>
