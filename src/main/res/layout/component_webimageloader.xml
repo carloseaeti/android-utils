@@ -7,9 +7,10 @@
     android:layout_height="wrap_content">
     <ImageView
         android:tag="image_loader_image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"/>
     <ProgressBar
         android:tag="image_loader_progress"
         android:layout_width="wrap_content"
