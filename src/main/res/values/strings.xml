@@ -9,8 +9,6 @@
     <string name="unknown_error">Erro desconhecido ao consultar servidor remoto.</string>
     <string name="timeout_error">Esgotado o tempo limite de conexão com o servidor.</string>
     <!-- |||||||||||||||||| -->
-    <string name="title_activity_tests">Tests</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Configurar</string>
     <string name="default_generic_error">Erro desconhecido. Tente novamente. Caso o erro persista, entre em contato com o administrador.</string>
     <string name="default_unauthorized_error">Sem autorização.</string>
