@@ -16,7 +16,8 @@ public abstract class RepositoryFactory {
         if(repositoryFactory == null) {
             try {
                 ApplicationInfo app = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-                repositoryFactory = (RepositoryFactory) Class.forName(app.metaData.getString("com.cea.database.RepositoryFactory")).newInstance();
+                Class repositoryClass = Class.forName(app.metaData.getString("com.cea.database.RepositoryFactory"));
+                repositoryFactory = (RepositoryFactory) repositoryClass.newInstance();
             } catch (Exception e) {
                 throw new RuntimeException("RepositotyFactory not declared in Manifest. Use meta-data name 'com.cea.database.RepositoryFactory'");
             }
