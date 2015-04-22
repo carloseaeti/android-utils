@@ -1,9 +1,6 @@
 package com.cea.utils.database;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.widget.ArrayAdapter;
 
 import com.j256.ormlite.dao.Dao;
@@ -19,26 +16,29 @@ public class AutoUpdateableArrayAdapter<T extends GenericDao> extends ArrayAdapt
     private List<T> data;
     private Dao<T, Object> dao;
     private PreparedQuery mQuery;
-    private BroadcastReceiver mReceiver;
+    private Class type;
 
     /**
      *
      * @param type
      * @param query If null, query for all.
      */
-    public AutoUpdateableArrayAdapter(Context context, int layout, Class<T> type, PreparedQuery query){
+    public AutoUpdateableArrayAdapter(Context context,  int layout, Class<T> type, PreparedQuery query){
         super(context, layout);
         dao = RepositoryFactory.getRepository(context).getDao(type);
         mQuery = query;
+        this.type = type;
         update();
-        mReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                update();
-                notifyDataSetChanged();
-            }
-        };
-        context.registerReceiver(mReceiver, new IntentFilter(GenericDao.getContentChangeFilter(type)));
+    }
+
+    String getIntentFilterAction(){
+        return GenericDao.getContentChangeFilter(type);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        update();
+        super.notifyDataSetChanged();
     }
 
     private void update() {
@@ -53,15 +53,6 @@ public class AutoUpdateableArrayAdapter<T extends GenericDao> extends ArrayAdapt
         catch (Exception ex){
             throw new RuntimeException(ex);
         }
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        try{
-            getContext().unregisterReceiver(mReceiver);
-        }
-        catch (Exception ex){}
     }
 
     @Override
