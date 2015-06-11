@@ -39,6 +39,11 @@ public abstract class GenericDao {
         notifyDataChange(ChangeType.DELETE);
     }
 
+    public void deleteAll(){
+        repository.deleteAll(this.getClass());
+        notifyDataChange(ChangeType.DELETE);
+    }
+
     public <T> List<T> getAll(){
         return repository.getAll(getClass());
     }
