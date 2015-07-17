@@ -7,6 +7,7 @@ import com.cea.utils.bugs.Application;
 import com.j256.ormlite.dao.Dao;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by carlos.araujo on 13/03/2015.
@@ -42,6 +43,25 @@ public abstract class GenericDao {
     public void deleteAll(){
         repository.deleteAll(this.getClass());
         notifyDataChange(ChangeType.DELETE);
+    }
+
+    public <T extends GenericDao> void createOrUpdate(final T... data){
+        if(data.length > 0){
+            Dao dao = getDao();
+            try {
+                dao.callBatchTasks(new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        for(T obj : data){
+                            obj.createOrUpdate();
+                        }
+                        return null;
+                    }
+                });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public <T> List<T> getAll(){

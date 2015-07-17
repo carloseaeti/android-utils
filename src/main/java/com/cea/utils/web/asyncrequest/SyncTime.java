@@ -8,7 +8,7 @@ public class SyncTime {
     public static final long MIN_TIME = 60 * 1000;
     public static final long FIVE_MINUTES = 300000L;
     public static final long THIRTY_MINUTES = 1800000L;
-    public static final long ONE_HOUR = 3600000L;
+    public static final long ONE_HOUR = 3600000L, DEFAULT = ONE_HOUR;
     public static final long INFINITE = -1;
 
     private long time = MIN_TIME;

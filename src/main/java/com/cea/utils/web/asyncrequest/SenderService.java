@@ -100,8 +100,8 @@ public class SenderService extends IntentService {
         if(syncTime.getValue() == SyncTime.INFINITE){
             return false;
         }
-        boolean timeout = (currentTime >= lastRequest + (syncTime == null ? SyncTime.ONE_HOUR : syncTime.getValue()));
-        return timeout && (NetworkInterface.WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface._3G));
+        boolean timeout = (currentTime >= lastRequest + (syncTime == null ? SyncTime.DEFAULT : syncTime.getValue()));
+        return timeout && ((NetworkInterface.WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface._3G)));
     }
 
     private boolean isWifiOn(Context context){

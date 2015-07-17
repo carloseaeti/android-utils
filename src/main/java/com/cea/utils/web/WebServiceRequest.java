@@ -6,6 +6,7 @@ import android.util.Log;
 import com.cea.utils.R;
 
 import org.apache.http.conn.ConnectTimeoutException;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -28,7 +29,8 @@ public class WebServiceRequest {
         if(useGson) {
             restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
         }
-        SimpleClientHttpRequestFactory restTemplateFactory = (SimpleClientHttpRequestFactory) restTemplate.getRequestFactory();
+        HttpComponentsClientHttpRequestFactory restTemplateFactory = new HttpComponentsClientHttpRequestFactory();
+        restTemplate.setRequestFactory(restTemplateFactory);
         if(timeout != null && timeout.length > 0){
             restTemplateFactory.setConnectTimeout(timeout[0]);
             restTemplateFactory.setReadTimeout(DEFAULT_READ_TIMEOUT);
@@ -89,7 +91,7 @@ public class WebServiceRequest {
             }
         }
         if(logUnknown) {
-            genericException.printStackTrace();
+            Log.w("WebServiceRequest", "Erro desconhecido", genericException);
         }
         else{
             Log.d("WebServiceRequest", "Erro desconhecido", genericException);
