@@ -50,7 +50,7 @@ public class LogColetorReceiver extends BroadcastReceiver{
             pw.flush();
             pw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }

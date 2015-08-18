@@ -46,7 +46,7 @@ public abstract class GenericDao<T extends GenericDao> {
         notifyDataChange(ChangeType.DELETE_ALL);
     }
 
-    protected static void deleteAll(Class clazz){
+    public static void deleteAll(Class clazz){
         DefaultRepository repository = RepositoryFactory.getRepository(Application.getContext());
         repository.deleteAll(clazz);
         notifyDataChange(clazz, ChangeType.DELETE_ALL);
@@ -75,6 +75,11 @@ public abstract class GenericDao<T extends GenericDao> {
         return repository.getAll(typeParamClass);
     }
 
+    public static <E> List<E> getAll(Class clazz){
+        DefaultRepository repository = RepositoryFactory.getRepository(Application.getContext());
+        return repository.getAll(clazz);
+    }
+
     public long getCount() {
         return repository.getCount(typeParamClass);
     }
@@ -89,7 +94,7 @@ public abstract class GenericDao<T extends GenericDao> {
         return repository.getDao(clazz);
     }
 
-    protected static <E> E findById(Class<E> clazz, long id) {
+    public static <E> E findById(Class<E> clazz, long id) {
         DefaultRepository repository = RepositoryFactory.getRepository(Application.getContext());
         return repository.findEntityById(clazz, id);
     }
