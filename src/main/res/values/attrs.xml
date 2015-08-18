@@ -15,4 +15,17 @@
         <attr name="adjustViewBounds" format="boolean"/>
         <attr name="fill_width" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="DatePicker">
+        <attr name="show_date" format="boolean" />
+        <attr name="show_hour" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="FontFitTextView">
+        <attr name="max_size" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="Divider">
+        <attr name="text" format="string"/>
+    </declare-styleable>
 </resources>

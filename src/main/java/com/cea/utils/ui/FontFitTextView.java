@@ -5,15 +5,20 @@ package com.cea.utils.ui;
  */
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.TextView;
+
+import com.cea.utils.R;
 
 public class FontFitTextView extends TextView {
 
     private boolean heightSet;
     int useHeight;
+    int maxSize;
 
     public FontFitTextView(Context context) {
         super(context);
@@ -23,6 +28,18 @@ public class FontFitTextView extends TextView {
     public FontFitTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialise();
+        configureAttrs(context, attrs);
+    }
+
+    private void configureAttrs(Context context, AttributeSet attrs) {
+        if(isInEditMode()){
+            maxSize = 30;
+        }
+        else {
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            TypedArray attrsArray = context.obtainStyledAttributes(attrs, R.styleable.FontFitTextView);
+            maxSize = attrsArray.getDimensionPixelOffset(R.styleable.FontFitTextView_max_size, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, metrics));
+        }
     }
 
     private void initialise() {
@@ -54,7 +71,7 @@ public class FontFitTextView extends TextView {
                 lo = size; // too small
         }
         // Use lo so that we undershoot rather than overshoot
-        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, lo);
+        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, Math.min(lo, maxSize));
     }
 
     @Override

@@ -36,6 +36,12 @@ public class AutoCompleteEditText extends AutoCompleteTextView {
                 selectedItem = getAdapter().getItem(i);
             }
         });
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDropDown();
+            }
+        });
     }
 
     private Object matchWithToStringItem(String itemStr, ListAdapter list) {
@@ -58,4 +64,17 @@ public class AutoCompleteEditText extends AutoCompleteTextView {
         return matchObject;
     }
 
+    public void setSelection(Object obj) {
+        ListAdapter adapter = getAdapter();
+        if(adapter != null && obj != null) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+                Object item = adapter.getItem(i);
+                if (item.equals(obj)) {
+                    selectedItem = item;
+                    setText(item.toString());
+                    break;
+                }
+            }
+        }
+    }
 }
