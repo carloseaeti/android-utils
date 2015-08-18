@@ -1,8 +1,7 @@
 package com.cea.utils.database;
-
 /**
- * Created by carlos.araujo on 14/04/2015.
+ * Database change types
  */
 public enum ChangeType {
-    DELETE, UPDATE, CREATE;
+    DELETE,DELETE_ALL , UPDATE, CREATE;
 }

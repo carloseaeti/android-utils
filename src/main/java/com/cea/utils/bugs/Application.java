@@ -4,7 +4,7 @@ import android.content.Context;
 
 /**
  * Created by carlos.araujo on 08/01/2015.
- * Fix AsyncTask 'never ends' problem. See: https://code.google.com/p/android/issues/detail?id=20915
+ * Fix AsyncTask 'never ends' - Preload class problem. See: https://code.google.com/p/android/issues/detail?id=20915
  */
 public class Application extends android.app.Application {
 

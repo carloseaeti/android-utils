@@ -5,12 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.misc.TransactionManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by carlos.araujo on 19/12/2014.
@@ -25,6 +27,10 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+        createAllTables(connectionSource);
+    }
+
+    private void createAllTables(ConnectionSource connectionSource) {
         try {
             Class[] classes = getClassList();
             for(Class clazz : classes){
@@ -37,6 +43,11 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        dropAllTables(connectionSource);
+        onCreate(database, connectionSource);
+    }
+
+    private void dropAllTables(ConnectionSource connectionSource) {
         Class[] classes = getClassList();
         for(Class clazz : classes){
             try {
@@ -45,7 +56,6 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
                 throw new RuntimeException(e);
             }
         }
-        onCreate(database, connectionSource);
     }
 
     @Override
@@ -69,7 +79,7 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public <T> T findEntityById(Class clazz, Long id) {
+    protected <T> T findEntityById(Class clazz, Long id) {
         Dao<T, Object> dao = getDao(clazz);
         try {
             return dao.queryForId(id);
@@ -112,5 +122,16 @@ public abstract class DefaultRepository extends OrmLiteSqliteOpenHelper {
 
     public void deleteAll(Class clazz) {
         getWritableDatabase().execSQL("DELETE FROM " + clazz.getSimpleName());
+    }
+
+    public void clearDatabase() throws Exception{
+        TransactionManager.callInTransaction(connectionSource, new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                dropAllTables(connectionSource);
+                createAllTables(connectionSource);
+                return null;
+            }
+        });
     }
 }
