@@ -21,6 +21,9 @@ public class Application extends android.app.Application {
     }
 
     public static Context getContext(){
+        if(applicationContext == null){
+            throw new RuntimeException("Application Context is null. You extends lib Application?");
+        }
         return applicationContext;
     }
 }

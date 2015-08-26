@@ -20,7 +20,7 @@ import java.util.concurrent.Callable;
  */
 public abstract class GenericDao<T extends GenericDao> {
 
-    protected DefaultRepository repository;
+    private transient DefaultRepository repository;
     private Class<T> typeParamClass;
 
     public GenericDao(Class<T> clazz){
@@ -75,7 +75,7 @@ public abstract class GenericDao<T extends GenericDao> {
         return repository.getAll(typeParamClass);
     }
 
-    public static <E> List<E> getAll(Class clazz){
+    public static <E> List<E> getAll(Class<E> clazz){
         DefaultRepository repository = RepositoryFactory.getRepository(Application.getContext());
         return repository.getAll(clazz);
     }
@@ -118,5 +118,12 @@ public abstract class GenericDao<T extends GenericDao> {
 
     public static String getContentChangeFilter(Class<? extends GenericDao> clazz){
         return clazz.getName();
+    }
+
+    protected DefaultRepository getRepository(){
+        if(repository == null){
+            repository = RepositoryFactory.getRepository(Application.getContext());
+        }
+        return repository;
     }
 }
