@@ -1,0 +1,10 @@
+package com.cea.utils.web.request;
+
+/**
+ * Created by Carlos on 20/08/2015.
+ */
+public class UnknownHttpException extends RuntimeException {
+    public UnknownHttpException(Exception ex){
+        super(ex);
+    }
+}
