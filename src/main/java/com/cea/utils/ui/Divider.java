@@ -19,7 +19,10 @@ public class Divider extends LinearLayout {
         if(!isInEditMode()) {
             addView(LayoutInflater.from(context).inflate(R.layout.divider, null));
         }
-        TextView mText = (TextView) findViewById(R.id.divider_text);
-        mText.setText(attrsArray.getText(R.styleable.Divider_text));
+        TextView wgtTxt = (TextView) findViewById(R.id.divider_text);
+        CharSequence mText = attrsArray.getText(R.styleable.Divider_text);
+        if(mText != null) {
+            wgtTxt.setText(mText);
+        }
     }
 }

@@ -7,6 +7,8 @@
         <attr name="text_value" format="string" />
         <attr name="verticalPadding" format="dimension" />
         <attr name="horizontalPadding" format="dimension"/>
+        <attr name="is_rounded" format="boolean" />
+        <attr name="background_color" format="color" />
     </declare-styleable>
 
     <declare-styleable name="WebImageLoader">

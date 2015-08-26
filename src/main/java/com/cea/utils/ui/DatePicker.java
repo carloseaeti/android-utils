@@ -18,17 +18,25 @@ import com.cea.utils.ui.inject.InjectView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by Carlos on 14/08/2015.
  */
 public class DatePicker extends LinearLayout implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
+    StatusChangeListener mObservable = new StatusChangeListener();
+
+    public void addStatusChangeListener(Observer listener){
+        mObservable.addObserver(listener);
+    }
+
     private Calendar mDate;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd / MM / yyyy    HH : mm");
 
     @InjectView(tag = "date_picker_date")
-    private FontFitTextView wgtTxtRouteDate;
+    private FontFitTextView wgtTxtDate;
     @InjectView(tag = "date_picker_select_date")
     private View wgtBtnSelectDate;
     @InjectView(tag = "date_picker_select_hour")
@@ -57,7 +65,9 @@ public class DatePicker extends LinearLayout implements DatePickerDialog.OnDateS
     }
 
     public Calendar getTime() {
-        return mDate;
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(mDate.getTimeInMillis());
+        return date;
     }
 
     public void setTime(Date time) {
@@ -93,7 +103,9 @@ public class DatePicker extends LinearLayout implements DatePickerDialog.OnDateS
     }
 
     private void updateDate() {
-        wgtTxtRouteDate.setText(dateFormat.format(mDate.getTime()));
+        wgtTxtDate.setText(dateFormat.format(mDate.getTime()));
+        wgtTxtDate.setError(null);
+        mObservable.notifyObservers();
     }
 
     @Override
@@ -101,5 +113,19 @@ public class DatePicker extends LinearLayout implements DatePickerDialog.OnDateS
         mDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mDate.set(Calendar.MINUTE, minute);
         updateDate();
+    }
+
+    public void setError(String error) {
+        if(error != null) {
+            wgtTxtDate.requestFocus();
+        }
+        wgtTxtDate.setError(error);
+    }
+}
+
+class StatusChangeListener extends Observable{
+    @Override
+    public boolean hasChanged() {
+        return true;
     }
 }
