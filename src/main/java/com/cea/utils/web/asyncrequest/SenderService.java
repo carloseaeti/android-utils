@@ -4,21 +4,13 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.cea.utils.web.NetworkInterface;
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-
-import dalvik.system.DexFile;
 
 
 /**
@@ -99,7 +91,7 @@ public class SenderService extends IntentService {
             return false;
         }
         boolean timeout = (currentTime >= lastRequest + (syncTime == null ? SyncTime.DEFAULT : syncTime.getValue()));
-        return timeout && ((NetworkInterface.WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface._3G)));
+        return timeout && ((NetworkInterface.ONLY_WIFI.equals(asyncRequestInstance.useInterface()) && isWifiOn) || (asyncRequestInstance.useInterface().equals(NetworkInterface.ALL)));
     }
 
     private boolean isWifiOn(Context context){
