@@ -61,12 +61,12 @@ public class Scheduler extends WakefulBroadcastReceiver {
         return context.getSharedPreferences(getClass().getSimpleName(), Context.MODE_PRIVATE);
     }
 
-    static void scheduleNextCall(Context context) {
+    static void scheduleNextCall(Context context, long nextCallTime) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(ACTION_SCHEDULER_CALL);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + SyncTime.MIN_TIME + 5 * 1000,
+                SystemClock.elapsedRealtime() + nextCallTime + 5 * 1000,
                 alarmIntent);
     }
 }

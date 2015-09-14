@@ -28,6 +28,7 @@ public class SenderService extends IntentService {
     }
 
     private boolean scheduledCall;
+    private long nextCallTime = SyncTime.MIN_TIME;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -55,7 +56,7 @@ public class SenderService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         if(scheduledCall) {
-            Scheduler.scheduleNextCall(getApplicationContext());
+            Scheduler.scheduleNextCall(getApplicationContext(), nextCallTime);
         }
     }
 
@@ -71,6 +72,7 @@ public class SenderService extends IntentService {
         for(Class<?> asyncRequest : asyncRequestList){
             try {
                 AsyncRequest asyncRequestInstance = (AsyncRequest) asyncRequest.newInstance();
+                nextCallTime = Math.min(asyncRequestInstance.syncTime().getValue(), nextCallTime);
                 if(timeout(preferences, asyncRequest, asyncRequestInstance, isWifiOn)){
                     Log.d(Scheduler.class.getSimpleName(), "Calling scheduler on class ".concat(asyncRequest.getSimpleName()));
                     asyncRequestInstance.send();
