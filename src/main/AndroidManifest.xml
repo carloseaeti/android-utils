@@ -10,7 +10,7 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name" >
-        <receiver android:name=".web.asyncrequest.Scheduler" >
+        <receiver android:name="com.cea.utils.web.asyncrequest.Scheduler" >
             <intent-filter>
                 <action android:name="com.cea.utils.web.asyncrequest.scheduler.action.START" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -18,12 +18,17 @@
         </receiver>
 
         <service
-            android:name=".web.asyncrequest.SenderService"
-            android:exported="false">
+            android:name="com.cea.utils.web.asyncrequest.SenderService"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="com.cea.utils.web.asyncrequest.action.START" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name="com.cea.utils.Tests">
+
+            </activity>
     </application>
 
 </manifest>
